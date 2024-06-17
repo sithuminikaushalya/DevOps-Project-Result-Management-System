@@ -1,0 +1,202 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    margin-top: 100px; 
+    overflow-y: auto; 
+}
+
+.image-carousel {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.faculty-details {
+    margin-top: 40px;
+}
+
+.department-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.department-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s ease;
+    width: 200px;
+    padding: 20px;
+    background-color: #ecf1f7;
+    border: 1px solid #f1f3f8;
+    border-radius: 8px;
+}
+
+.department-box:hover {
+    transform: translateY(-5px);
+}
+
+.department-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.department-info {
+    text-align: center;
+}
+
+.calendar {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #eee;
+    font-size: 0.8rem;
+}
+
+.current-day {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.other-websites {
+    margin-top: 40px;
+}
+.other-websites h2 {
+    justify-content: center;
+    align-items: center;
+}
+
+.website-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.website-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s ease;
+    width: 200px;
+    padding: 20px;
+    background-color: #f0f1f2;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.website-box:hover {
+    transform: translateY(-5px);
+}
+
+.website-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.website-info {
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        margin-top: 100px; 
+    }
+
+    .content h1 {
+        font-size: 1rem;
+    }
+
+    .image-carousel {
+        max-width: 80%; 
+    }
+
+    .department-box,
+    .website-box {
+        width: 100%; 
+        max-width: 300px; 
+    }
+
+    .department-image,
+    .website-image {
+        width: 100px; 
+        height: 100px;
+    }
+
+    .department-info,
+    .website-info {
+        font-size: 0.8rem; 
+    }
+
+    .calendar {
+        width: auto;
+    }
+
+    .calendar h2 {
+        font-size: 1.2rem; 
+    }
+
+    .day {
+        width: 20px; 
+        height: 20px;
+        font-size: 0.7rem; 
+    }
+}

@@ -1,0 +1,34 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./result-management-system-client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./result-management-system-server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./result-management-system-server/.env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=your-mongo-username
+      - MONGO_INITDB_ROOT_PASSWORD=your-mongo-password
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
