@@ -2,7 +2,7 @@ version: '3'
 services:
   frontend:
     build:
-      context: ./result-management-system-client
+      context: ./Frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -11,12 +11,12 @@ services:
 
   backend:
     build:
-      context: ./result-management-system-server
+      context: ./Backend
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
     env_file:
-      - ./result-management-system-server/.env
+      - ./Backend/.env
     depends_on:
       - mongodb
 

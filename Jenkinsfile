@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
-        GIT_REPO_URL = 'https://github.com/your-username/your-repo.git'
+        DOCKER_HUB_CREDENTIALS = credentials('151Chase%12')
+        GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
     }
 
     stages {
@@ -16,8 +16,8 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    dir('frontend') {
-                        sh 'docker build -t your-docker-hub-username/frontend .'
+                    dir('Frontend') {
+                        sh 'docker build -t sithuminikaushalya/frontend .'
                     }
                 }
             }
@@ -26,8 +26,8 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    dir('backend') {
-                        sh 'docker build -t your-docker-hub-username/backend .'
+                    dir('Backend') { 
+                        sh 'docker build -t sithuminikaushalya/backend .'
                     }
                 }
             }
@@ -36,9 +36,9 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        sh 'docker push your-docker-hub-username/frontend'
-                        sh 'docker push your-docker-hub-username/backend'
+                    docker.withRegistry('https://index.docker.io/v1/', "${env.151Chase%12}") {
+                        sh 'docker push sithuminikaushalya/frontend'
+                        sh 'docker push sithuminikaushalya/backend'
                     }
                 }
             }
