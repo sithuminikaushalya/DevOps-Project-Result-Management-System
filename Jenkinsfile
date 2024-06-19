@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     dir('Frontend') { 
-                        sh 'docker build -t sithuminikaushalya/frontend .'
+                        bat 'docker build -t sithuminikaushalya/Frontend .'
                     }
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     dir('Backend') { 
-                        sh 'docker build -t sithuminikaushalya/backend .'
+                        bat 'docker build -t sithuminikaushalya/Backend .'
                     }
                 }
             }
@@ -38,8 +38,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
-                        sh 'docker push sithuminikaushalya/frontend'
-                        sh 'docker push sithuminikaushalya/backend'
+                        bat 'docker push sithuminikaushalya/frontend'
+                        bat 'docker push sithuminikaushalya/backend'
                     }
                 }
             }
@@ -48,9 +48,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    dir('Path/To/Your/Compose/File') {
-                        sh 'docker-compose down'
-                        sh 'docker-compose up -d'
+                    dir('Path\\To\\Your\\Compose\\File') {
+                        bat 'docker-compose down'
+                        bat 'docker-compose up -d'
                     }
                 }
             }
