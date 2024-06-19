@@ -4,10 +4,27 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose"
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose;${env.PATH}"
     }
 
     stages {
+        stage('Verify PATH') {
+            steps {
+                script {
+                    bat 'echo %PATH%'
+                }
+            }
+        }
+
+        stage('Verify Docker and Docker-Compose') {
+            steps {
+                script {
+                    bat 'docker --version'
+                    bat 'docker-compose --version'
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git url: "${env.GIT_REPO_URL}", branch: 'main'
@@ -17,8 +34,8 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    dir('Frontend') { 
-                        bat 'docker build -t sithuminikaushalya/Frontend .'
+                    dir('Frontend') {
+                        bat 'docker build -t sithuminikaushalya/frontend .'
                     }
                 }
             }
@@ -27,8 +44,8 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    dir('Backend') { 
-                        bat 'docker build -t sithuminikaushalya/Backend .'
+                    dir('Backend') {
+                        bat 'docker build -t sithuminikaushalya/backend .'
                     }
                 }
             }
