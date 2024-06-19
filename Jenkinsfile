@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('151Chase%12')
+        DOCKER_HUB_CREDENTIALS = credentials('1215')
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
     }
 
@@ -36,7 +36,7 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.151Chase%12}") {
+                    docker.withRegistry('https://index.docker.io/v1/', "${env.1215}") {
                         sh 'docker push sithuminikaushalya/frontend'
                         sh 'docker push sithuminikaushalya/backend'
                     }
