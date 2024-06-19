@@ -16,7 +16,7 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    dir('result-management-system-client') { // Adjust the directory if necessary
+                    dir('Frontend') { 
                         sh 'docker build -t sithuminikaushalya/frontend .'
                     }
                 }
@@ -26,7 +26,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    dir('result-management-system-server') { // Adjust the directory if necessary
+                    dir('Backend') { 
                         sh 'docker build -t sithuminikaushalya/backend .'
                     }
                 }
