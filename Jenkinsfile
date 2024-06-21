@@ -35,7 +35,9 @@ pipeline {
             steps {
                 script {
                     dir('Frontend') {
-                        bat 'docker build -t sithuminikaushalya/frontend .'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/frontend ." -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
@@ -45,7 +47,9 @@ pipeline {
             steps {
                 script {
                     dir('Backend') {
-                        bat 'docker build -t sithuminikaushalya/backend .'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/backend ." -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
@@ -54,16 +58,15 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    // Tag frontend image
-                    docker.image('sithuminikaushalya/frontend').tag("sithuminikaushalya/frontend:${BUILD_NUMBER}")
-
-                    // Tag backend image
-                    docker.image('sithuminikaushalya/backend').tag("sithuminikaushalya/backend:${BUILD_NUMBER}")
-
-                    // Push tagged images to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_HUB_CREDENTIALS}") {
-                        docker.image("sithuminikaushalya/frontend:${BUILD_NUMBER}").push()
-                        docker.image("sithuminikaushalya/backend:${BUILD_NUMBER}").push()
+                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
+                        powershell '''
+                        docker push sithuminikaushalya/frontend | Tee-Object -FilePath push_frontend.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                        docker push sithuminikaushalya/backend | Tee-Object -FilePath push_backend.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                        '''
+                        powershell 'Get-Content push_frontend.log'
+                        powershell 'Get-Content push_backend.log'
                     }
                 }
             }
@@ -73,10 +76,14 @@ pipeline {
             steps {
                 script {
                     dir('Path\\To\\Your\\Compose\\File') {
-                        bat '''
-                        docker-compose down
-                        docker-compose up -d
+                        powershell '''
+                        docker-compose down | Tee-Object -FilePath deploy_down.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                        docker-compose up -d | Tee-Object -FilePath deploy_up.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
                         '''
+                        powershell 'Get-Content deploy_down.log'
+                        powershell 'Get-Content deploy_up.log'
                     }
                 }
             }
