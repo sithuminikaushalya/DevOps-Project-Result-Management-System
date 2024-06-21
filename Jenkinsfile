@@ -31,15 +31,7 @@ pipeline {
             }
         }
 
-        stage('Start Docker Service') {
-            steps {
-                script {
-                    bat 'net start com.docker.service'
-                }
-            }
-        }
-
-          stage('Build Frontend') {
+        stage('Build Frontend') {
             steps {
                 script {
                     dir('Frontend') {
@@ -62,7 +54,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Push Images') {
             steps {
@@ -93,17 +84,6 @@ pipeline {
                         '''
                         powershell 'Get-Content deploy_down.log'
                         powershell 'Get-Content deploy_up.log'
-                    }
-                }
-            }
-        }
-
-        stage('Verify Credentials') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-                        echo "Docker Hub Username: ${DOCKER_HUB_USERNAME}"
-                        echo "Docker Hub Password: ${DOCKER_HUB_PASSWORD}"
                     }
                 }
             }
