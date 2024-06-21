@@ -55,22 +55,31 @@ pipeline {
             }
         }
 
-        stage('Push Images') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
-                        powershell '''
-                        docker push sithuminikaushalya/frontend | Tee-Object -FilePath push_frontend.log
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
-                        docker push sithuminikaushalya/backend | Tee-Object -FilePath push_backend.log
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
-                        '''
-                        powershell 'Get-Content push_frontend.log'
-                        powershell 'Get-Content push_backend.log'
-                    }
+stage('Push Images') {
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
+                // Push frontend image
+                powershell '''
+                docker push sithuminikaushalya/frontend | Tee-Object -FilePath push_frontend.log
+                if ($LASTEXITCODE -ne 0) { 
+                    echo "Failed to push frontend image"
+                    exit 1 
                 }
+                '''
+
+                // Push backend image
+                powershell '''
+                docker push sithuminikaushalya/backend | Tee-Object -FilePath push_backend.log
+                if ($LASTEXITCODE -ne 0) { 
+                    echo "Failed to push backend image"
+                    exit 1 
+                }
+                '''
             }
         }
+    }
+}
 
         stage('Deploy') {
             steps {
