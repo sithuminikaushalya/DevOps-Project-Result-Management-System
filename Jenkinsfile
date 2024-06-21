@@ -36,8 +36,10 @@ pipeline {
                 script {
                     dir('Frontend') {
                         powershell '''
-                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/frontend ." -Verb RunAs -Wait
+                        docker build -t sithuminikaushalya/frontend . | Tee-Object -FilePath build_frontend.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
                         '''
+                        powershell 'Get-Content build_frontend.log'
                     }
                 }
             }
@@ -48,8 +50,10 @@ pipeline {
                 script {
                     dir('Backend') {
                         powershell '''
-                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/backend ." -Verb RunAs -Wait
+                        docker build -t sithuminikaushalya/backend . | Tee-Object -FilePath build_backend.log
+                        if ($LASTEXITCODE -ne 0) { exit 1 }
                         '''
+                        powershell 'Get-Content build_backend.log'
                     }
                 }
             }
@@ -84,6 +88,17 @@ pipeline {
                         '''
                         powershell 'Get-Content deploy_down.log'
                         powershell 'Get-Content deploy_up.log'
+                    }
+                }
+            }
+        }
+
+        stage('Verify Credentials') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                        echo "Docker Hub Username: ${DOCKER_HUB_USERNAME}"
+                        echo "Docker Hub Password: ${DOCKER_HUB_PASSWORD}"
                     }
                 }
             }
