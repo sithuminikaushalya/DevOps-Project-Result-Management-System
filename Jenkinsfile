@@ -58,7 +58,7 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry('https://hub.docker.com/repository/docker/kaushalyasithumini29/results_management_system/general', "${env.DOCKER_HUB_CREDENTIALS}") {
+                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
                         powershell '''
                         docker push sithuminikaushalya/frontend | Tee-Object -FilePath push_frontend.log
                         if ($LASTEXITCODE -ne 0) { exit 1 }
