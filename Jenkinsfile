@@ -31,6 +31,14 @@ pipeline {
             }
         }
 
+        stage('Start Docker Service') {
+            steps {
+                script {
+                    bat 'net start com.docker.service'
+                }
+            }
+        }
+
         stage('Build Frontend') {
             steps {
                 script {
