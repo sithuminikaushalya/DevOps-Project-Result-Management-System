@@ -36,10 +36,8 @@ pipeline {
                 script {
                     dir('Frontend') {
                         powershell '''
-                        docker build -t sithuminikaushalya/frontend . | Tee-Object -FilePath build_frontend.log
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/frontend ." -Verb RunAs -Wait
                         '''
-                        powershell 'Get-Content build_frontend.log'
                     }
                 }
             }
@@ -50,10 +48,8 @@ pipeline {
                 script {
                     dir('Backend') {
                         powershell '''
-                        docker build -t sithuminikaushalya/backend . | Tee-Object -FilePath build_backend.log
-                        if ($LASTEXITCODE -ne 0) { exit 1 }
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/backend ." -Verb RunAs -Wait
                         '''
-                        powershell 'Get-Content build_backend.log'
                     }
                 }
             }
