@@ -35,7 +35,9 @@ pipeline {
             steps {
                 script {
                     dir('Frontend') {
-                        bat 'docker build -t sithuminikaushalya/frontend .'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/frontend ." -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
@@ -45,7 +47,9 @@ pipeline {
             steps {
                 script {
                     dir('Backend') {
-                        bat 'docker build -t sithuminikaushalya/backend .'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker build -t sithuminikaushalya/backend ." -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
@@ -55,8 +59,10 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
-                        bat 'docker push sithuminikaushalya/frontend'
-                        bat 'docker push sithuminikaushalya/backend'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker push sithuminikaushalya/frontend" -Verb RunAs -Wait
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker push sithuminikaushalya/backend" -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
@@ -66,8 +72,10 @@ pipeline {
             steps {
                 script {
                     dir('Path\\To\\Your\\Compose\\File') {
-                        bat 'docker-compose down'
-                        bat 'docker-compose up -d'
+                        powershell '''
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker-compose down" -Verb RunAs -Wait
+                        Start-Process -FilePath "powershell.exe" -ArgumentList "docker-compose up -d" -Verb RunAs -Wait
+                        '''
                     }
                 }
             }
