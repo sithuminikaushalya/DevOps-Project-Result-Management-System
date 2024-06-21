@@ -59,7 +59,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
-                
                         def frontendPush = bat(script: 'docker push sithuminikaushalya/frontend', returnStatus: true)
                         if (frontendPush != 0) {
                             error "Failed to push frontend image"
@@ -73,7 +72,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy') {
             steps {
