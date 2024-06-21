@@ -58,7 +58,7 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.151Chase%12}") {
+                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
                         powershell '''
                         Start-Process -FilePath "powershell.exe" -ArgumentList "docker push sithuminikaushalya/frontend" -Verb RunAs -Wait
                         Start-Process -FilePath "powershell.exe" -ArgumentList "docker push sithuminikaushalya/backend" -Verb RunAs -Wait
