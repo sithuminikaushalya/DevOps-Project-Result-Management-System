@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('sithumini')
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
+        DOCKER_IMAGE = 'kaushalyasithumini29/DevOps-Project-Result-Management-System:DevOps'
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose;${env.PATH}"
     }
 
@@ -55,21 +56,23 @@ pipeline {
             }
         }
 
-
-        //pushing image to dockerhub
-        stage('Push Images') {
+        stage('Build') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_HUB_CREDENTIALS}") {
-                        def frontendPush = bat(script: 'docker push sithuminikaushalya/frontend', returnStatus: true)
-                        if (frontendPush != 0) {
-                            error "Failed to push frontend image"
-                        }
+                    // Build Docker image
+                    docker.build(DOCKER_IMAGE)
+                }
+            }
+        }
 
-                        def backendPush = bat(script: 'docker push sithuminikaushalya/backend', returnStatus: true)
-                        if (backendPush != 0) {
-                            error "Failed to push backend image"
-                        }
+        //pushing image to dockerhub
+        stage('Push') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        // Push Docker image
+                        docker.image(DOCKER_IMAGE).push()
                     }
                 }
             }
