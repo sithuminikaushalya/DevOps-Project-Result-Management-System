@@ -49,6 +49,17 @@ pipeline {
             }
         }
 
+        stage('Build MongoDB Docker Image') {
+            steps {
+                dir('MongoDB') {
+                    script {
+                        // Example Docker command to build MongoDB image
+                        bat 'docker build -t kaushalyasithumini29/mongodb:%BUILD_NUMBER% .'
+                    }
+                }
+            }
+        }
+
         stage('Login to Docker Hub') {
             steps {
                 script {
@@ -69,6 +80,12 @@ pipeline {
         stage('Push Backend Image') {
             steps {
                 bat 'docker push kaushalyasithumini29/backend:%BUILD_NUMBER%'
+            }
+        }
+
+        stage('Push MongoDB Image') {
+            steps {
+                bat 'docker push kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
             }
         }
     }
