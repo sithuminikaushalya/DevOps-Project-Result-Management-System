@@ -72,7 +72,7 @@ pipeline {
         stage('Push') {
             when {
                 expression {
-                    currentBuild.result != 'FAILURE'
+                    return currentBuild.result != 'FAILURE' && currentBuild.result != 'UNSTABLE'
                 }
             }
             steps {
@@ -87,7 +87,7 @@ pipeline {
         stage('Deploy') {
             when {
                 expression {
-                    currentBuild.result != 'FAILURE'
+                    return currentBuild.result != 'FAILURE' && currentBuild.result != 'UNSTABLE'
                 }
             }
             steps {
