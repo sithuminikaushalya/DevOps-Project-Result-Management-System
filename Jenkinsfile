@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
-        DOCKER_HUB_PASSWORD = credentials('sithumini')
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose;${env.PATH}"
     }
@@ -54,8 +53,8 @@ pipeline {
             steps {
                 script {
                     // Login to Docker Hub using Docker Hub token/password
-                    withCredentials([string(credentialsId: 'sithumini', variable: 'DOCKER_HUB_PASSWORD')]) {
-                        bat "docker login -u ${env.DOCKER_HUB_USERNAME} -p %DOCKER_HUB_PASSWORD%"
+                    withCredentials([usernamePassword(credentialsId: 'sithumini', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        bat "docker login -u ${env.DOCKER_HUB_USERNAME} -p ${env.DOCKER_HUB_PASSWORD}"
                     }
                 }
             }
