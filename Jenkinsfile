@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('sithumini')
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
-        DOCKER_IMAGE = 'kaushalyasithumini29/DevOps-Project-Result-Management-System:DevOps'
+        DOCKER_IMAGE = 'kaushalyasithumini29/devops-project-result-management-system:devops'
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose;${env.PATH}"
     }
 
