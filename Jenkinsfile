@@ -49,6 +49,14 @@ pipeline {
             }
         }
 
+        stage('Build Database Docker Image') {
+            steps {
+                dir('Database') {
+                    bat 'docker build -t kaushalyasithumini29/database:%BUILD_NUMBER% .'
+                }
+            }
+        }
+
         stage('Login to Docker Hub') {
             steps {
                 script {
@@ -69,6 +77,12 @@ pipeline {
         stage('Push Backend Image') {
             steps {
                 bat 'docker push kaushalyasithumini29/backend:%BUILD_NUMBER%'
+            }
+        }
+
+        stage('Push Database Image') {
+            steps {
+                bat 'docker push kaushalyasithumini29/database:%BUILD_NUMBER%'
             }
         }
     }
