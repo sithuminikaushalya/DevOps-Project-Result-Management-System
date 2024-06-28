@@ -24,6 +24,10 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sithumini1215  
+      - MONGO_INITDB_ROOT_PASSWORD=FbP2QL5oEMkjN4wD 
+      - MONGO_INITDB_DATABASE=result-management-devops 
     volumes:
       - mongo-data:/data/db
 
