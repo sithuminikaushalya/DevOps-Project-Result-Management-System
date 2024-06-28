@@ -53,7 +53,6 @@ pipeline {
             steps {
                 dir('MongoDB') {
                     script {
-                        // Example Docker command to build MongoDB image
                         bat 'docker build -t kaushalyasithumini29/mongodb:%BUILD_NUMBER% .'
                     }
                 }
@@ -63,7 +62,6 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    // Login to Docker Hub using Docker Hub token/password
                     withCredentials([usernamePassword(credentialsId: 'sithumini', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
                         bat "docker login -u ${env.DOCKER_HUB_USERNAME} -p ${env.DOCKER_HUB_PASSWORD}"
                     }
