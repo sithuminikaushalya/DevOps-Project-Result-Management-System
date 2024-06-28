@@ -71,8 +71,8 @@ pipeline {
 
         stage('Push') {
             when {
-                not {
-                    failure()
+                expression {
+                    currentBuild.result != 'FAILURE'
                 }
             }
             steps {
@@ -86,8 +86,8 @@ pipeline {
 
         stage('Deploy') {
             when {
-                not {
-                    failure()
+                expression {
+                    currentBuild.result != 'FAILURE'
                 }
             }
             steps {
