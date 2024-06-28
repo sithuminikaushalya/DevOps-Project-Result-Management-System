@@ -56,22 +56,28 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image
-                    docker.build(DOCKER_IMAGE)
+                    // Check if Dockerfile exists before building
+                    if (fileExists('Dockerfile')) {
+                        docker.build(DOCKER_IMAGE)
+                    } else {
+                        error "Dockerfile not found. Skipping Docker image build."
+                    }
                 }
             }
         }
 
-        //pushing image to dockerhub
         stage('Push') {
+            when {
+                not {
+                    failure()
+                }
+            }
             steps {
                 script {
-                    // Log in to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        // Push Docker image
                         docker.image(DOCKER_IMAGE).push()
                     }
                 }
@@ -79,6 +85,11 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+                not {
+                    failure()
+                }
+            }
             steps {
                 script {
                     dir('Path\\To\\Your\\Compose\\File') {
