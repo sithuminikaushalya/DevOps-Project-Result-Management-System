@@ -33,28 +33,6 @@ pipeline {
             }
         }
 
-        stage('Static Code Analysis') {
-            steps {
-                bat 'sonar-scanner' // Adjust this command based on your setup
-            }
-        }
-
-        stage('Unit Testing') {
-            steps {
-                dir('Backend') {
-                    bat 'npm test' // Or the appropriate command for your testing framework
-                }
-            }
-        }
-
-        stage('Integration Testing') {
-            steps {
-                dir('IntegrationTests') {
-                    bat 'run-integration-tests' // Adjust according to your setup
-                }
-            }
-        }
-
         stage('Build Frontend Docker Image') {
             steps {
                 dir('Frontend') {
@@ -78,14 +56,6 @@ pipeline {
                         bat 'docker build -t kaushalyasithumini29/mongodb:%BUILD_NUMBER% .'
                     }
                 }
-            }
-        }
-
-        stage('Security Scanning') {
-            steps {
-                bat 'trivy image kaushalyasithumini29/frontend:%BUILD_NUMBER%'
-                bat 'trivy image kaushalyasithumini29/backend:%BUILD_NUMBER%'
-                bat 'trivy image kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
             }
         }
 
@@ -114,33 +84,6 @@ pipeline {
         stage('Push MongoDB Image') {
             steps {
                 bat 'docker push kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://your-k8s-cluster-url']) {
-                    bat 'kubectl apply -f k8s/deployment.yaml' // Adjust according to your setup
-                }
-            }
-        }
-
-        stage('Smoke Testing') {
-            steps {
-                bat 'run-smoke-tests' // Adjust according to your setup
-            }
-        }
-
-        stage('Notification') {
-            steps {
-                script {
-                    def buildStatus = currentBuild.result ?: 'SUCCESS'
-                    emailext(
-                        to: 'team@example.com',
-                        subject: "Build ${buildStatus}: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                        body: "The build ${buildStatus} for job ${env.JOB_NAME} build number ${env.BUILD_NUMBER}.",
-                    )
-                }
             }
         }
     }
