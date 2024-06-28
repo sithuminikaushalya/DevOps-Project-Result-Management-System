@@ -52,7 +52,7 @@ pipeline {
         stage('Build Database Docker Image') {
             steps {
                 dir('Database') {
-                    bat 'docker build -t kaushalyasithumini29/database:%BUILD_NUMBER% .'
+                    bat 'docker build -t kaushalyasithumini29/mongodb:%BUILD_NUMBER% .'
                 }
             }
         }
@@ -82,7 +82,7 @@ pipeline {
 
         stage('Push Database Image') {
             steps {
-                bat 'docker push kaushalyasithumini29/database:%BUILD_NUMBER%'
+                bat 'docker push kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
             }
         }
     }
