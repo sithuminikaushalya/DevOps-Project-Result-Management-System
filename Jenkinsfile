@@ -4,7 +4,10 @@ pipeline {
     environment {
         DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
         GIT_REPO_URL = 'https://github.com/sithuminikaushalya/DevOps-Project-Result-Management-System'
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Docker Compose;${env.PATH}"
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('google-cloud-key')
+        PROJECT_ID = 'argon-computer-427810-u7'
+        CLUSTER_NAME = 'results-management-system'
+        CLUSTER_ZONE = 'us-central1-a'
     }
 
     stages {
@@ -84,6 +87,34 @@ pipeline {
         stage('Push MongoDB Image') {
             steps {
                 bat 'docker push kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
+            }
+        }
+
+        stage('Configure Google Cloud SDK') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'google-cloud-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        bat """
+                            gcloud auth activate-service-account --key-file=${env.GOOGLE_APPLICATION_CREDENTIALS}
+                            gcloud config set project ${env.PROJECT_ID}
+                            gcloud container clusters get-credentials ${env.CLUSTER_NAME} --zone ${env.CLUSTER_ZONE}
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    bat 'kubectl apply -f k8s/namespace.yaml'
+                    bat 'kubectl apply -f k8s/frontend-deployment.yaml'
+                    bat 'kubectl apply -f k8s/frontend-service.yaml'
+                    bat 'kubectl apply -f k8s/backend-deployment.yaml'
+                    bat 'kubectl apply -f k8s/backend-service.yaml'
+                    bat 'kubectl apply -f k8s/mongo-deployment.yaml'
+                    bat 'kubectl apply -f k8s/mongo-service.yaml'
+                }
             }
         }
     }
