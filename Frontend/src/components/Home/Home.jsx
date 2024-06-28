@@ -122,7 +122,7 @@ const Home = () => {
                 </div>
 
                 <div className="faculty-details">
-                    <h2>Faculty Departments</h2>
+                    <h2>Faculty Details</h2>
                     <div className="department-list">
                         {departments.map((department, index) => (
                             <a key={index} href={department.url} className="department-box" target="_blank" rel="noopener noreferrer">
