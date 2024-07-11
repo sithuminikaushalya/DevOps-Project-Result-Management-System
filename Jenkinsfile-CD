@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
-        KUBECONFIG_CREDENTIALS_ID = 'your-kubeconfig-credentials-id'
-        NAMESPACE = 'default'  // Adjust if you have a specific namespace
+        KUBECONFIG_CREDENTIALS_ID = 'google-cloud-key-new'
+        NAMESPACE = 'default'  
     }
 
     stages {
@@ -32,7 +32,6 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
-                        // Apply Kubernetes deployment files
                         bat 'kubectl apply -f k8s/frontend-deployment.yaml'
                         bat 'kubectl apply -f k8s/backend-deployment.yaml'
                         bat 'kubectl apply -f k8s/mongodb-deployment.yaml'
