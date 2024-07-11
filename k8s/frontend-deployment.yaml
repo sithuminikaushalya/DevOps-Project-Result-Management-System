@@ -16,4 +16,4 @@ spec:
       - name: frontend
         image: kaushalyasithumini29/frontend:latest
         ports:
-        - containerPort: 80
+        - containerPort: 3000

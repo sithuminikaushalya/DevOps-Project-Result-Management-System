@@ -16,4 +16,4 @@ spec:
       - name: backend
         image: kaushalyasithumini29/backend:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 3001
