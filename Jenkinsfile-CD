@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
+        KUBECONFIG_CREDENTIALS_ID = 'your-kubeconfig-credentials-id'
+        NAMESPACE = 'default'  // Adjust if you have a specific namespace
+    }
+
+    stages {
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'sithumini', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        bat "docker login -u ${env.DOCKER_HUB_USERNAME} -p ${env.DOCKER_HUB_PASSWORD}"
+                    }
+                }
+            }
+        }
+
+        stage('Pull Docker Images') {
+            steps {
+                script {
+                    bat 'docker pull kaushalyasithumini29/frontend:%BUILD_NUMBER%'
+                    bat 'docker pull kaushalyasithumini29/backend:%BUILD_NUMBER%'
+                    bat 'docker pull kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
+                        // Apply Kubernetes deployment files
+                        bat 'kubectl apply -f k8s/frontend-deployment.yaml'
+                        bat 'kubectl apply -f k8s/backend-deployment.yaml'
+                        bat 'kubectl apply -f k8s/mongodb-deployment.yaml'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            bat 'docker logout'
+            cleanWs()
+        }
+    }
+}
