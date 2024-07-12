@@ -21,9 +21,9 @@ pipeline {
         stage('Pull Docker Images') {
             steps {
                 script {
-                    bat 'docker pull kaushalyasithumini29/frontend:%BUILD_NUMBER%'
-                    bat 'docker pull kaushalyasithumini29/backend:%BUILD_NUMBER%'
-                    bat 'docker pull kaushalyasithumini29/mongodb:%BUILD_NUMBER%'
+                    bat 'docker pull kaushalyasithumini29/frontend:latest'
+                    bat 'docker pull kaushalyasithumini29/backend:latest'
+                    bat 'docker pull kaushalyasithumini29/mongodb:latest'
                 }
             }
         }
