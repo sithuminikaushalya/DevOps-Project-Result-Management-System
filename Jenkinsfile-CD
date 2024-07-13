@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
-        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-credentials-id'
+        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-credentials-id-new'
         NAMESPACE = 'default'  
     }
 
