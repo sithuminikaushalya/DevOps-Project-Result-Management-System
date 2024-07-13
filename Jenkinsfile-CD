@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_USERNAME = 'kaushalyasithumini29'
         KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-credentials-id-new'
-        NAMESPACE = 'default'  
+        NAMESPACE = 'default'
     }
 
     stages {
@@ -31,10 +31,11 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
-                        bat 'kubectl apply -f k8s/frontend-deployment.yaml'
-                        bat 'kubectl apply -f k8s/backend-deployment.yaml'
-                        bat 'kubectl apply -f k8s/mongodb-deployment.yaml'
+                    withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG_FILE')]) {
+                        bat 'type %KUBECONFIG_FILE% > kubeconfig'
+                        bat 'kubectl apply -f k8s/frontend-deployment.yaml --kubeconfig=kubeconfig'
+                        bat 'kubectl apply -f k8s/backend-deployment.yaml --kubeconfig=kubeconfig'
+                        bat 'kubectl apply -f k8s/mongodb-deployment.yaml --kubeconfig=kubeconfig'
                     }
                 }
             }
